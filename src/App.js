@@ -344,7 +344,7 @@ function ConsultaTab({ user }) {
         <div style={s.grid3}>
           <div><label style={s.label}>Set</label>
             <select value={form.set_} onChange={e=>setF("set_",e.target.value)} style={{width:"100%"}}>
-              {["1","2","3"].map(v=><option key={v}>{v}</option>)}
+              {["1","2","3","4","5"].map(v=><option key={v}>{v}</option>)}
             </select></div>
           <div><label style={s.label}>Games do Quebrador</label>
             <select value={form.quebrador} onChange={e=>setF("quebrador",e.target.value)} style={{width:"100%"}}>

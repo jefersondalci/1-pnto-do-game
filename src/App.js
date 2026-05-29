@@ -11,13 +11,9 @@ const THRESHOLDS = { recomendado: 0.75, neutro: 0.60, oddMin: 1.40, oddMax1: 1.6
 function getRec(pct, total) {
   if (pct===null||pct===undefined||total===null||total===undefined) return null;
   if (total < MIN_SAMPLE) return null;
-  // Intervalo de confiança Wilson - penaliza amostras pequenas
-  const z = 1.96;
-  const n = total;
-  const p = pct;
-  const lower = (p + z*z/(2*n) - z*Math.sqrt((p*(1-p)+z*z/(4*n))/n)) / (1 + z*z/n);
-  if (lower >= THRESHOLDS.recomendado) return "RECOMENDADO";
-  if (lower >= THRESHOLDS.neutro) return "NEUTRO";
+  // Usa percentual bruto para recomendação (Wilson é só informativo)
+  if (pct >= THRESHOLDS.recomendado) return "RECOMENDADO";
+  if (pct >= THRESHOLDS.neutro) return "NEUTRO";
   return "NÃO RECOMENDADO";
 }
 function getOddRec(odd) {

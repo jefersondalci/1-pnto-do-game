@@ -77,6 +77,8 @@ function calcResult(form, c1Entry, c2Entry) {
   if(rec1&&rec2){if(countRec>=2)final="RECOMENDADO";else if(countNao>=2)final="NÃO RECOMENDADO";else final="NEUTRO";}
   const probCombinada = calcProbCombinada(c1pct, c2pct, oddProb);
   const ev = calcEV(probCombinada, form.odd);
+  // NEUTRO+ : neutro com EV > 10%
+  if(final==="NEUTRO" && ev!==null && ev>0.10) final="NEUTRO+";
   return {c1pct,c2pct,oddProb,rec1,rec2,rec3,final,probCombinada,ev};
 }
 
@@ -110,7 +112,7 @@ function QuickSelect({label,options,value,onChange,color="#2d6a4f"}){
 
 function RecBadge({rec}){
   if(!rec)return<span style={{fontSize:12,color:"#aaa"}}>—</span>;
-  const st={"RECOMENDADO":{bg:"#d4f7e3",color:"#1a6640",border:"#5cb87a"},"NEUTRO":{bg:"#fef4d4",color:"#7a5a10",border:"#e4c24a"},"NÃO RECOMENDADO":{bg:"#fde8e8",color:"#8b2020",border:"#e47a7a"}}[rec]||{};
+  const st={"RECOMENDADO":{bg:"#d4f7e3",color:"#1a6640",border:"#5cb87a"},"NEUTRO+":{bg:"#dcfce7",color:"#15803d",border:"#16a34a"},"NEUTRO":{bg:"#fef4d4",color:"#7a5a10",border:"#e4c24a"},"NÃO RECOMENDADO":{bg:"#fde8e8",color:"#8b2020",border:"#e47a7a"}}[rec]||{};
   return<span style={{display:"inline-block",fontSize:11,fontWeight:600,padding:"3px 9px",borderRadius:5,border:`1px solid ${st.border}`,background:st.bg,color:st.color}}>{rec}</span>;
 }
 
@@ -415,6 +417,7 @@ function ConsultaTab({user}){
 function ResultCard({result, odd}){
   const c={
     "RECOMENDADO":{bg:"#e8f9ef",border:"#2d7d4f",color:"#1a5c38",emoji:"✅"},
+    "NEUTRO+":{bg:"#f0fdf4",border:"#16a34a",color:"#15803d",emoji:"🟡"},
     "NEUTRO":{bg:"#fffbeb",border:"#d97706",color:"#7a5a10",emoji:"⚠️"},
     "NÃO RECOMENDADO":{bg:"#fef2f2",border:"#dc2626",color:"#8b2020",emoji:"❌"},
   }[result.final]||{bg:"#f9fafb",border:"#ddd",color:"#6b7280",emoji:"❓"};

@@ -120,11 +120,14 @@ function StatBar({pct, total}){
   if(total===undefined||total===null)return<span style={{fontSize:12,color:"#aaa"}}>sem dados</span>;
   const hasData=total>=MIN_SAMPLE;
   const lower = wilsonLower(pct, total);
-  const color=!hasData?"#ccc":lower>=0.75?"#1a9150":lower>=0.60?"#c47a10":"#c02020";
+  // Cor baseada no percentual BRUTO (que define a recomendação)
+  const color=!hasData?"#ccc":pct>=0.75?"#1a9150":pct>=0.60?"#c47a10":"#c02020";
   return(
     <div style={{display:"flex",alignItems:"center",gap:8}}>
       <div style={{flex:1,height:6,borderRadius:3,background:"#f0f0f0",overflow:"hidden",position:"relative"}}>
-        <div style={{width:`${(pct||0)*100}%`,height:"100%",background:color,borderRadius:3,opacity:0.3}}/>
+        {/* Barra clara = percentual bruto */}
+        <div style={{width:`${(pct||0)*100}%`,height:"100%",background:color,borderRadius:3,opacity:0.25}}/>
+        {/* Barra sólida = intervalo confiável Wilson */}
         {lower!==null&&<div style={{position:"absolute",top:0,left:0,width:`${lower*100}%`,height:"100%",background:color,borderRadius:3}}/>}
       </div>
       <span style={{fontSize:12,color,minWidth:120,textAlign:"right"}}>
